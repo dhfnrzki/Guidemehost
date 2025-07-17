@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "axios": "^1.10.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.17.1",
+    "firebase": "^11.9.1",
+    "firebase-admin": "^11.5.0",
+    "midtrans-client": "^1.4.3",
+    "nodemailer": "^6.9.1"
+  }
+}
