@@ -1,21 +1,23 @@
-# Menggunakan image Flutter resmi versi stabil
-FROM ghcr.io/cirruslabs/flutter:3.19.0
+# Gunakan image Flutter resmi
+FROM cirrusci/flutter:stable
 
-# Menentukan direktori kerja
+# Set working directory
 WORKDIR /app
 
-# Menyalin semua file project ke container
+# Copy semua file project
 COPY . .
 
-# Mengambil dependensi Flutter
+# Jalankan pub get
 RUN flutter pub get
 
-# Membangun aplikasi Flutter Web
+# Build untuk web
 RUN flutter build web
 
-# Menentukan direktori hasil build web
-WORKDIR /app/build/web
+# Gunakan web server ringan untuk serve hasil build
+RUN apt-get update && apt-get install -y python3
 
-# Menjalankan web server ringan (opsional jika diperlukan)
-# Kamu bisa menggunakan web server seperti dhttpd, nginx, atau Python
-CMD ["python3", "-m", "http.server", "8080"]
+# Port Railway default
+EXPOSE 8080
+
+# Jalankan web app
+CMD ["python3", "-m", "http.server", "8080", "--directory", "build/web"]
