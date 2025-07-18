@@ -11,7 +11,7 @@
 
     <application
         android:name="${applicationName}"
-        android:label="guide_me"
+        android:label="Guide"
         android:icon="@mipmap/ic_launcher">
 
         <activity

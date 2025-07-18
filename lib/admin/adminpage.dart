@@ -134,22 +134,21 @@ class AdminPageState extends State<AdminPage>
           .where('isRead', isEqualTo: false)
           .snapshots()
           .listen((snapshot) {
-            // <-- Langganan disimpan
-            if (mounted) {
-              setState(() {
-                _notificationCount = snapshot.docs.length;
-              });
-            }
+        // <-- Langganan disimpan
+        if (mounted) {
+          setState(() {
+            _notificationCount = snapshot.docs.length;
           });
+        }
+      });
 
       User? user = FirebaseAuth.instance.currentUser;
       if (user == null) return;
 
-      final QuerySnapshot snapshot =
-          await FirebaseFirestore.instance
-              .collection('admin_notifications')
-              .where('isRead', isEqualTo: false)
-              .get();
+      final QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('admin_notifications')
+          .where('isRead', isEqualTo: false)
+          .get();
 
       // Update state with notification count
       if (mounted) {
@@ -166,12 +165,12 @@ class AdminPageState extends State<AdminPage>
           .where('isRead', isEqualTo: false)
           .snapshots()
           .listen((snapshot) {
-            if (mounted) {
-              setState(() {
-                _notificationCount = snapshot.docs.length;
-              });
-            }
+        if (mounted) {
+          setState(() {
+            _notificationCount = snapshot.docs.length;
           });
+        }
+      });
     } catch (e) {
       debugPrint('Error fetching notification count: $e');
     }
@@ -180,11 +179,10 @@ class AdminPageState extends State<AdminPage>
   Future<String?> getUserRole() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      DocumentSnapshot doc =
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.uid)
-              .get();
+      DocumentSnapshot doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
       if (doc.exists && doc.data() != null) {
         final data = doc.data() as Map<String, dynamic>;
         return data['role'];
@@ -225,12 +223,12 @@ class AdminPageState extends State<AdminPage>
         }
       }
 
-      final sortedKeys =
-          counts.keys.toList()..sort(
-            (a, b) => DateFormat(
-              'MMM yyyy',
-            ).parse(a).compareTo(DateFormat('MMM yyyy').parse(b)),
-          );
+      final sortedKeys = counts.keys.toList()
+        ..sort(
+          (a, b) => DateFormat(
+            'MMM yyyy',
+          ).parse(a).compareTo(DateFormat('MMM yyyy').parse(b)),
+        );
 
       if (mounted) {
         setState(() {
@@ -286,10 +284,9 @@ class AdminPageState extends State<AdminPage>
         backgroundColor: _backgroundColor,
         drawer: _buildDrawer(),
         onDrawerChanged: _onDrawerChanged,
-        body:
-            isLoading
-                ? Center(child: CircularProgressIndicator(color: _primaryGreen))
-                : _buildBody(),
+        body: isLoading
+            ? Center(child: CircularProgressIndicator(color: _primaryGreen))
+            : _buildBody(),
       ),
     );
   }
@@ -437,47 +434,43 @@ class AdminPageState extends State<AdminPage>
           count: _userCount,
           label: 'Kelola Pengguna',
           icon: Icons.people_outline,
-          onTap:
-              () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => KelolaUserPage()),
-              ),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => KelolaUserPage()),
+          ),
         ),
         _buildNavCard(
           count: _categoryCount,
           label: 'Kelola Kategori',
           icon: Icons.category_outlined,
-          onTap:
-              () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const KelolaSubkategoriPage(),
-                ),
-              ),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const KelolaSubkategoriPage(),
+            ),
+          ),
         ),
         _buildNavCard(
           count: _destinationCount,
           label: 'Kelola Destinasi',
           icon: Icons.map_outlined,
-          onTap:
-              () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const KelolaDestinasiPage(),
-                ),
-              ),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const KelolaDestinasiPage(),
+            ),
+          ),
         ),
         _buildNavCard(
           count: _eventCount,
           label: 'Kelola Event',
           icon: Icons.event_note_outlined,
-          onTap:
-              () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const KontrollEventPage(),
-                ),
-              ),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const KontrollEventPage(),
+            ),
+          ),
         ),
       ],
     );
@@ -604,30 +597,29 @@ class AdminPageState extends State<AdminPage>
         return DraggableScrollableSheet(
           initialChildSize: 0.7,
           maxChildSize: 0.9,
-          builder:
-              (_, controller) => Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          builder: (_, controller) => Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 8, bottom: 16),
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(top: 8, bottom: 16),
-                      width: 40,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                    Expanded(
-                      child:
-                          _buildChartCard(), // Menampilkan card chart di dalam modal
-                    ),
-                  ],
+                Expanded(
+                  child:
+                      _buildChartCard(), // Menampilkan card chart di dalam modal
                 ),
-              ),
+              ],
+            ),
+          ),
         );
       },
     );
@@ -643,161 +635,152 @@ class AdminPageState extends State<AdminPage>
           color: _cardBackgroundColor,
           borderRadius: BorderRadius.circular(20),
         ),
-        child:
-            userCounts.isEmpty
-                ? Center(child: CircularProgressIndicator(color: _primaryGreen))
-                : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 16),
-                      child: Text(
-                        'Jumlah Pengguna per Bulan',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
+        child: userCounts.isEmpty
+            ? Center(child: CircularProgressIndicator(color: _primaryGreen))
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 16),
+                    child: Text(
+                      'Jumlah Pengguna per Bulan',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Expanded(
-                      child: BarChart(
-                        BarChartData(
-                          maxY:
-                              (userCounts.values.isEmpty
-                                  ? 0
-                                  : (userCounts.values.toList()..sort()).last) *
-                              1.2,
-                          barTouchData: BarTouchData(
-                            touchTooltipData: BarTouchTooltipData(
-                              tooltipBorder: const BorderSide(
-                                color: Colors.black,
-                              ),
-                              tooltipRoundedRadius: 8,
-                              getTooltipItem: (
-                                group,
-                                groupIndex,
-                                rod,
-                                rodIndex,
-                              ) {
-                                if (group.x < 0 ||
-                                    group.x >= userCounts.length) {
-                                  return null;
+                  ),
+                  Expanded(
+                    child: BarChart(
+                      BarChartData(
+                        maxY: (userCounts.values.isEmpty
+                                ? 0
+                                : (userCounts.values.toList()..sort()).last) *
+                            1.2,
+                        barTouchData: BarTouchData(
+                          touchTooltipData: BarTouchTooltipData(
+                            tooltipBorder: const BorderSide(
+                              color: Colors.black,
+                            ),
+                            getTooltipItem: (
+                              group,
+                              groupIndex,
+                              rod,
+                              rodIndex,
+                            ) {
+                              if (group.x < 0 || group.x >= userCounts.length) {
+                                return null;
+                              }
+                              return BarTooltipItem(
+                                '${userCounts.values.elementAt(group.x)} pengguna',
+                                const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              );
+                            },
+                          ),
+                          touchCallback: (event, barTouchResponse) {
+                            setState(() {
+                              if (barTouchResponse?.spot != null &&
+                                  event is! FlTapUpEvent &&
+                                  event is! FlPanEndEvent) {
+                                touchedIndex = barTouchResponse!
+                                    .spot!.touchedBarGroupIndex;
+                              } else {
+                                touchedIndex = -1;
+                              }
+                            });
+                          },
+                        ),
+                        gridData: FlGridData(
+                          show: true,
+                          drawHorizontalLine: true,
+                          drawVerticalLine: false,
+                          getDrawingHorizontalLine: (value) => FlLine(
+                            color: Colors.grey[300],
+                            strokeWidth: 1,
+                            dashArray: [5, 5],
+                          ),
+                        ),
+                        borderData: FlBorderData(show: false),
+                        titlesData: FlTitlesData(
+                          show: true,
+                          bottomTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              showTitles: true,
+                              reservedSize: 30,
+                              getTitlesWidget: (value, _) {
+                                int index = value.toInt();
+                                if (index < 0 || index >= userCounts.length) {
+                                  return const SizedBox();
                                 }
-                                return BarTooltipItem(
-                                  '${userCounts.values.elementAt(group.x)} pengguna',
-                                  const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 8),
+                                  child: Text(
+                                    userCounts.keys.elementAt(index),
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black54,
+                                    ),
                                   ),
                                 );
                               },
                             ),
-                            touchCallback: (event, barTouchResponse) {
-                              setState(() {
-                                if (barTouchResponse?.spot != null &&
-                                    event is! FlTapUpEvent &&
-                                    event is! FlPanEndEvent) {
-                                  touchedIndex =
-                                      barTouchResponse!
-                                          .spot!
-                                          .touchedBarGroupIndex;
-                                } else {
-                                  touchedIndex = -1;
-                                }
-                              });
-                            },
                           ),
-                          gridData: FlGridData(
-                            show: true,
-                            drawHorizontalLine: true,
-                            drawVerticalLine: false,
-                            getDrawingHorizontalLine:
-                                (value) => FlLine(
-                                  color: Colors.grey[300],
-                                  strokeWidth: 1,
-                                  dashArray: [5, 5],
-                                ),
-                          ),
-                          borderData: FlBorderData(show: false),
-                          titlesData: FlTitlesData(
-                            show: true,
-                            bottomTitles: AxisTitles(
-                              sideTitles: SideTitles(
-                                showTitles: true,
-                                reservedSize: 30,
-                                getTitlesWidget: (value, _) {
-                                  int index = value.toInt();
-                                  if (index < 0 || index >= userCounts.length) {
-                                    return const SizedBox();
-                                  }
-                                  return Padding(
-                                    padding: const EdgeInsets.only(top: 8),
-                                    child: Text(
-                                      userCounts.keys.elementAt(index),
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            leftTitles: AxisTitles(
-                              sideTitles: SideTitles(
-                                showTitles: true,
-                                reservedSize: 30,
-                                getTitlesWidget: (value, meta) {
-                                  if (value == 0) return const SizedBox();
-                                  return Text(
-                                    value.toInt().toString(),
-                                    style: const TextStyle(
-                                      fontSize: 11,
-                                      color: Colors.black54,
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                            rightTitles: const AxisTitles(
-                              sideTitles: SideTitles(showTitles: false),
-                            ),
-                            topTitles: const AxisTitles(
-                              sideTitles: SideTitles(showTitles: false),
+                          leftTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              showTitles: true,
+                              reservedSize: 30,
+                              getTitlesWidget: (value, meta) {
+                                if (value == 0) return const SizedBox();
+                                return Text(
+                                  value.toInt().toString(),
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.black54,
+                                  ),
+                                );
+                              },
                             ),
                           ),
-                          barGroups:
-                              userCounts.entries
-                                  .toList()
-                                  .asMap()
-                                  .entries
-                                  .map(
-                                    (entry) => BarChartGroupData(
-                                      x: entry.key,
-                                      barRods: [
-                                        BarChartRodData(
-                                          toY: entry.value.value.toDouble(),
-                                          color:
-                                              touchedIndex == entry.key
-                                                  ? _primaryGreen
-                                                  : _primaryGreen.withOpacity(
-                                                    0.6,
-                                                  ),
-                                          width: 22,
-                                          borderRadius: BorderRadius.circular(
-                                            0,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                  .toList(),
+                          rightTitles: const AxisTitles(
+                            sideTitles: SideTitles(showTitles: false),
+                          ),
+                          topTitles: const AxisTitles(
+                            sideTitles: SideTitles(showTitles: false),
+                          ),
                         ),
+                        barGroups: userCounts.entries
+                            .toList()
+                            .asMap()
+                            .entries
+                            .map(
+                              (entry) => BarChartGroupData(
+                                x: entry.key,
+                                barRods: [
+                                  BarChartRodData(
+                                    toY: entry.value.value.toDouble(),
+                                    color: touchedIndex == entry.key
+                                        ? _primaryGreen
+                                        : _primaryGreen.withOpacity(
+                                            0.6,
+                                          ),
+                                    width: 22,
+                                    borderRadius: BorderRadius.circular(
+                                      0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                            .toList(),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
+              ),
       ),
     );
   }
@@ -884,25 +867,22 @@ class AdminPageState extends State<AdminPage>
                       _scaffoldKey.currentState?.closeDrawer();
                       final shouldLogout = await showDialog<bool>(
                         context: context,
-                        builder:
-                            (context) => AlertDialog(
-                              title: const Text('Konfirmasi Logout'),
-                              content: const Text(
-                                'Apakah Anda yakin ingin keluar?',
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed:
-                                      () => Navigator.of(context).pop(false),
-                                  child: const Text('Batal'),
-                                ),
-                                TextButton(
-                                  onPressed:
-                                      () => Navigator.of(context).pop(true),
-                                  child: const Text('OK'),
-                                ),
-                              ],
+                        builder: (context) => AlertDialog(
+                          title: const Text('Konfirmasi Logout'),
+                          content: const Text(
+                            'Apakah Anda yakin ingin keluar?',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(false),
+                              child: const Text('Batal'),
                             ),
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(true),
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
                       );
                       if (shouldLogout == true) {
                         await _auth.signOut();

@@ -50,12 +50,12 @@ class _DashboardPageState extends State<DashboardPage> {
         }
       }
 
-      final sortedKeys =
-          counts.keys.toList()..sort(
-            (a, b) => DateFormat(
-              'MMM yyyy',
-            ).parse(a).compareTo(DateFormat('MMM yyyy').parse(b)),
-          );
+      final sortedKeys = counts.keys.toList()
+        ..sort(
+          (a, b) => DateFormat(
+            'MMM yyyy',
+          ).parse(a).compareTo(DateFormat('MMM yyyy').parse(b)),
+        );
 
       if (mounted) {
         setState(() {
@@ -132,36 +132,34 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ],
         ),
-        child:
-            isLoading || userCounts.isEmpty
-                ? const Center(
-                  child: CircularProgressIndicator(color: Colors.green),
-                )
-                : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(bottom: 16),
-                      child: Text(
-                        'Jumlah Pengguna per Bulan',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
+        child: isLoading || userCounts.isEmpty
+            ? const Center(
+                child: CircularProgressIndicator(color: Colors.green),
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 16),
+                    child: Text(
+                      'Jumlah Pengguna per Bulan',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Expanded(child: _buildBarChart()),
-                  ],
-                ),
+                  ),
+                  Expanded(child: _buildBarChart()),
+                ],
+              ),
       ),
     );
   }
 
   Widget _buildBarChart() {
-    final double maxY =
-        userCounts.values.isEmpty
-            ? 0
-            : (userCounts.values.toList()..sort()).last * 1.2;
+    final double maxY = userCounts.values.isEmpty
+        ? 0
+        : (userCounts.values.toList()..sort()).last * 1.2;
 
     return BarChart(
       BarChartData(
@@ -169,7 +167,6 @@ class _DashboardPageState extends State<DashboardPage> {
         barTouchData: BarTouchData(
           touchTooltipData: BarTouchTooltipData(
             tooltipBorder: const BorderSide(color: Colors.black),
-            tooltipRoundedRadius: 8,
             getTooltipItem: (group, groupIndex, rod, rodIndex) {
               if (group.x < 0 || group.x >= userCounts.length) {
                 return null;
@@ -251,35 +248,33 @@ class _DashboardPageState extends State<DashboardPage> {
             sideTitles: SideTitles(showTitles: false),
           ),
         ),
-        barGroups:
-            userCounts.isEmpty
-                ? []
-                : userCounts.entries
-                    .toList()
-                    .asMap()
-                    .entries
-                    .map(
-                      (entry) => BarChartGroupData(
-                        x: entry.key,
-                        barRods: [
-                          BarChartRodData(
-                            toY: entry.value.value.toDouble(),
-                            color:
-                                touchedIndex == entry.key
-                                    ? Colors.green
-                                    : _getBarColor(entry.key),
-                            width: 22,
-                            borderRadius: BorderRadius.circular(6),
-                            backDrawRodData: BackgroundBarChartRodData(
-                              show: true,
-                              toY: maxY,
-                              color: Colors.grey[300],
-                            ),
-                          ),
-                        ],
+        barGroups: userCounts.isEmpty
+            ? []
+            : userCounts.entries
+                .toList()
+                .asMap()
+                .entries
+                .map(
+                  (entry) => BarChartGroupData(
+                    x: entry.key,
+                    barRods: [
+                      BarChartRodData(
+                        toY: entry.value.value.toDouble(),
+                        color: touchedIndex == entry.key
+                            ? Colors.green
+                            : _getBarColor(entry.key),
+                        width: 22,
+                        borderRadius: BorderRadius.circular(6),
+                        backDrawRodData: BackgroundBarChartRodData(
+                          show: true,
+                          toY: maxY,
+                          color: Colors.grey[300],
+                        ),
                       ),
-                    )
-                    .toList(),
+                    ],
+                  ),
+                )
+                .toList(),
       ),
     );
   }
