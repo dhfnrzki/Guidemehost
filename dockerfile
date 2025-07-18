@@ -1,22 +1,17 @@
-# Pakai Flutter image resmi
-FROM cirrusci/flutter:stable
+# Build stage: Membangun aplikasi Flutter
+FROM cirrusci/flutter:stable AS build
 
-# Set direktori kerja
 WORKDIR /app
-
-# Salin semua file ke container
-COPY . .
-
-# Ambil dependencies
+COPY pubspec.yaml pubspec.lock ./
 RUN flutter pub get
+COPY . .
+RUN flutter build web --release
 
-# Build project untuk web
-RUN flutter build web
+# Serve stage: Menggunakan Nginx untuk melayani aplikasi
+FROM nginx:stable-alpine AS serve
 
-# Pakai Python untuk serve hasil build
-RUN apt-get update && apt-get install -y python3
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /app/build/web /usr/share/nginx/html
 
-EXPOSE 8080
-
-# Jalankan web app Flutter
-CMD ["python3", "-m", "http.server", "8080", "--directory", "build/web"]
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
