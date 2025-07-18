@@ -1,0 +1,8 @@
+build
+.flutter-plugins
+.flutter-plugins-dependencies
+.dart_tool
+.packages
+.idea
+.git
+.gitignore
