@@ -6,7 +6,8 @@ version: 1.0.0+1
 publish_to: 'none'
 
 environment:
-  sdk: ^3.0.6
+  sdk: ^3.3.0
+  flutter: ">=3.10.0"
 
 dependencies:
   flutter:
@@ -21,7 +22,7 @@ dependencies:
   cloud_firestore: ^5.6.7
   logger: ^2.5.0
   google_fonts: ^6.2.1
-  google_sign_in: ^6.2.2
+  google_sign_in: ^7.1.1
   googleapis: ^14.0.0
   googleapis_auth: ^2.0.0
   http: ^1.4.0
@@ -30,7 +31,7 @@ dependencies:
   cloud_functions: ^5.4.0
   random_string: ^2.3.1
   carousel_slider: ^5.0.0
-  fl_chart: ^0.71.0
+  fl_chart: ^1.0.0
   intl: ^0.20.2
   shared_preferences: ^2.5.3
   image_picker: ^1.1.2
@@ -58,13 +59,14 @@ dependencies:
   webview_flutter: ^4.13.0
   webview_flutter_android: ^4.7.0
   webview_flutter_wkwebview: ^3.22.0
+  flutter_launcher_icons: ^0.14.4
   
   
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true
