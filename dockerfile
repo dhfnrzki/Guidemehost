@@ -1,23 +1,22 @@
-# Gunakan image Flutter resmi
+# Pakai Flutter image resmi
 FROM cirrusci/flutter:stable
 
-# Set working directory
+# Set direktori kerja
 WORKDIR /app
 
-# Copy semua file project
+# Salin semua file ke container
 COPY . .
 
-# Jalankan pub get
+# Ambil dependencies
 RUN flutter pub get
 
-# Build untuk web
+# Build project untuk web
 RUN flutter build web
 
-# Gunakan web server ringan untuk serve hasil build
+# Pakai Python untuk serve hasil build
 RUN apt-get update && apt-get install -y python3
 
-# Port Railway default
 EXPOSE 8080
 
-# Jalankan web app
+# Jalankan web app Flutter
 CMD ["python3", "-m", "http.server", "8080", "--directory", "build/web"]
